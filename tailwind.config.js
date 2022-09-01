@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       colors: {
         primary: "#5624d0",
+        udemyBlack: "#1c1d1f",
       },
     },
   },

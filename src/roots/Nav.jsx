@@ -8,6 +8,7 @@ function Nav() {
     <>
       <Navigation />
       <Outlet />
+      <div className="min-h-screen">ahmed</div>
       <Footer />
     </>
   );

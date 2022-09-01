@@ -5,7 +5,7 @@ function Navigation() {
   return (
     <nav className="flex justify-between p-3 md:p-4 items-center shadow-md">
       <button>
-        <span class="material-symbols-outlined translate-y-1 md:hidden">
+        <span className="material-symbols-outlined translate-y-1 md:hidden">
           menu
         </span>
       </button>
