@@ -59,7 +59,7 @@ const TRANS_VALUE = "transform .3s";
 function useAllStates(props) {
   const [elms] = useState(() => {
     const arr = React.Children.toArray(props.children);
-    const style = "relative w-screen overflow-hidden";
+    const style = "relative overflow-hidden";
 
     let elms = [
       <div key={-1} className={style}>

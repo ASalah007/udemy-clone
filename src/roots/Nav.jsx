@@ -7,8 +7,9 @@ function Nav() {
   return (
     <>
       <Navigation />
-      <Outlet />
-      <div className="min-h-screen">ahmed</div>
+      <div className="min-h-screen">
+        <Outlet />
+      </div>
       <Footer />
     </>
   );

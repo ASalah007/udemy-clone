@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Navigation() {
   return (
-    <nav className="flex justify-between p-3 md:p-4 items-center shadow-md">
+    <nav className="flex justify-between p-3 md:p-4 items-center shadow-md relative z-10">
       <button>
         <span className="material-symbols-outlined translate-y-1 md:hidden">
           menu
