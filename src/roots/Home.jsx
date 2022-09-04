@@ -17,7 +17,7 @@ function Home() {
   ];
   return (
     <div className="h-[480px] lg:h-[380px] lg:px-2">
-      <Carousel>
+      <Carousel items={1}>
         {data.map((e, i) => {
           return (
             <div key={i} className="w-screen">

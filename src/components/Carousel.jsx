@@ -94,16 +94,20 @@ function useAllStates(props) {
   const [activeIndex, setActiveIndex] = useState(1);
   const [transitionAmount, setTransitionAmount] = useState(() => calcTrans(1));
 
+  const items = props.items;
+
   const goRight = () => {
+    const newIndex = Math.min(activeIndex + items, elms.length - 1);
     if (activeIndex === elms.length - 1) return;
-    setTransitionAmount(calcTrans(activeIndex + 1));
-    setActiveIndex((i) => i + 1);
+    setTransitionAmount(calcTrans(newIndex));
+    setActiveIndex((i) => newIndex);
   };
 
   const goLeft = () => {
+    const newIndex = Math.max(activeIndex - items, 0);
     if (activeIndex === 0) return;
-    setTransitionAmount(calcTrans(activeIndex - 1));
-    setActiveIndex((i) => i - 1);
+    setTransitionAmount(calcTrans(newIndex));
+    setActiveIndex((i) => newIndex);
   };
 
   const handleTouchMove = (e) => {
