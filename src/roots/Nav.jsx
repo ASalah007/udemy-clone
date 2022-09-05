@@ -7,7 +7,7 @@ function Nav() {
   return (
     <>
       <Navigation />
-      <div className="min-h-screen">
+      <div className="min-h-screen max-w-[1500px] mx-auto overflow-x-hidden ">
         <Outlet />
       </div>
       <Footer />

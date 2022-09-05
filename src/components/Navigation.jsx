@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Navigation() {
   return (
-    <nav className="flex justify-between p-3 md:p-4 items-center shadow-md relative z-10">
+    <nav className="flex justify-around p-3 md:p-4 items-center shadow-md z-10 w-screen overflow-hidden">
       <button>
         <span className="material-symbols-outlined translate-y-1 md:hidden">
           menu
@@ -11,7 +11,7 @@ function Navigation() {
       </button>
       <Link
         to="/"
-        className="inlin-block m-auto md:m-0 translate-x-4 md:translate-x-0"
+        className="inline-block m-auto md:m-0 translate-x-4 md:translate-x-0"
       >
         <img
           className="w-22 min-w-[80px]"
@@ -26,7 +26,7 @@ function Navigation() {
       <form
         action="#"
         id="search"
-        className="grow shrink min-w-[200px] bg-[#f7f9fa] border border-black py-2 rounded-full hidden md:flex items-center mx-2"
+        className="grow shrink min-w-[150px] bg-[#f7f9fa] border border-black py-2 rounded-full hidden md:flex items-center mx-2"
       >
         <button type="submit" className="pl-3 translate-y-1 text-gray-500">
           <span className="material-symbols-outlined">search</span>
@@ -57,13 +57,13 @@ function Navigation() {
       <div className="md:flex hidden">
         <Link
           to="/"
-          className="border border-black px-5 py-2 font-bold mx-1 hover:bg-gray-100 min-w-[90px]"
+          className="border border-black px-5 py-2 font-bold mx-1 hover:bg-gray-100 whitespace-nowrap text-center"
         >
           Log in
         </Link>
         <Link
           to="/"
-          className="border border-black px-5 py-2 font-bold bg-black text-white mx-1 min-w-[100px]"
+          className="border border-black px-5 py-2 font-bold bg-black text-white mx-1 whitespace-nowrap text-center"
         >
           Sign up
         </Link>
