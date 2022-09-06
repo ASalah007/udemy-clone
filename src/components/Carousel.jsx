@@ -1,65 +1,59 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 
 export default function Carousel(props) {
   const [
-    elms,
-    transition,
+    transAmount,
+    transValue,
     goLeft,
     goRight,
-    transitionAmount,
-    handleTouchStart,
-    handleTouchMove,
-    handleTouchEnd,
-    handleAfterTransition,
+    handleTransitionEnd,
+    renderElms,
   ] = useAllStates(props);
 
   return (
-    <div className="relative min-h-full overflow-hidden min-w-full">
-      {/* left control */}
-      <button
-        className="hidden lg:flex absolute left-3 top-1/2 z-10 bg-black text-white justify-center items-center w-11 h-11 rounded-full"
-        onClick={() => goLeft()}
-      >
-        <span className="material-symbols-outlined text-3xl">
-          keyboard_arrow_left
-        </span>
-      </button>
-
-      {/*carousel items container*/}
+    <div className=" overflow-hidden relative ">
       <div
-        className={`absolute flex min-h-full min-w-full transition-transform delay-400`}
+        className="flex "
         style={{
-          transform: `translateX(-${transitionAmount})`,
-          transition: `${transition}`,
+          transform: `translateX(-${transAmount})`,
+          transition: `${transValue}`,
         }}
-        onTouchStart={(e) => handleTouchStart(e)}
-        onTouchMove={(e) => handleTouchMove(e)}
-        onTouchEnd={(e) => handleTouchEnd(e)}
-        onTransitionEnd={(e) => handleAfterTransition(e)}
+        onTransitionEnd={() => handleTransitionEnd()}
       >
-        {elms}
+        {renderElms()}
       </div>
 
-      {/*right control*/}
-      <button
-        className="absolute right-3 top-1/2 z-10 bg-black text-white hidden lg:flex justify-center items-center w-11 h-11 rounded-full"
-        onClick={() => goRight()}
-      >
-        <span className="material-symbols-outlined text-3xl">
-          keyboard_arrow_right
-        </span>
-      </button>
+      {/* right and left controls */}
+      {[
+        ["Keyboard_arrow_left", "left-3", goLeft],
+        ["keyboard_arrow_right", "right-3", goRight],
+      ].map((b, i) => {
+        return (
+          <button
+            key={i}
+            className={`hidden md:flex absolute ${b[1]} top-1/2 z-10 bg-black text-white justify-center items-center w-11 h-11 rounded-full`}
+            onClick={() => b[2]()}
+          >
+            <span className="material-symbols-outlined text-3xl">{b[0]}</span>
+          </button>
+        );
+      })}
     </div>
   );
 }
 
-const TRANS_VALUE = "transform .3s";
+const useAllStates = (props) => {
+  const elmsCount = React.Children.count(props.children) + 2;
 
-function useAllStates(props) {
-  const [elms] = useState(() => {
+  // takes an index and returns the translation amount
+  const calcTrans = (index) => {
+    return 100 * index + "%";
+  };
+
+  const renderElms = () => {
     const arr = React.Children.toArray(props.children);
-    const style = "relative overflow-hidden";
+    const style = "w-full grow shrink-0";
 
     let elms = [
       <div key={-1} className={style}>
@@ -69,7 +63,13 @@ function useAllStates(props) {
 
     arr.forEach((e, i) => {
       elms.push(
-        <div key={i} className={style}>
+        <div
+          key={i}
+          className={style}
+          onTouchStart={(e) => handleTouchStart(e)}
+          onTouchMove={(e) => handleTouchMove(e)}
+          onTouchEnd={(e) => handleTouchEnd(e)}
+        >
           {e}
         </div>
       );
@@ -82,81 +82,89 @@ function useAllStates(props) {
     );
 
     return elms;
-  });
-
-  const calcTrans = (index) => {
-    return (100 / elms.length) * index + "%";
   };
 
-  const [xpos, setXpos] = useState(0);
-  const [transition, setTransition] = useState(TRANS_VALUE);
-  const [swipe, setSwipe] = useState(0);
   const [activeIndex, setActiveIndex] = useState(1);
-  const [transitionAmount, setTransitionAmount] = useState(() => calcTrans(1));
+  const [transAmount, setTransAmount] = useState(calcTrans(1));
+  const [transValue, setTransValue] = useState("transform .4s");
+  const [delayedMotion, setDelayedMotion] = useState("none");
 
-  const items = props.items;
+  useEffect(() => {
+    if (delayedMotion === "none") return;
 
-  const goRight = () => {
-    const newIndex = Math.min(activeIndex + items, elms.length - 1);
-    if (activeIndex === elms.length - 1) return;
-    setTransitionAmount(calcTrans(newIndex));
-    setActiveIndex((i) => newIndex);
-  };
+    if (delayedMotion === "left") goLeft();
+    else goRight();
+
+    setDelayedMotion("none");
+  }, [delayedMotion]);
 
   const goLeft = () => {
-    const newIndex = Math.max(activeIndex - items, 0);
-    if (activeIndex === 0) return;
-    setTransitionAmount(calcTrans(newIndex));
-    setActiveIndex((i) => newIndex);
-  };
-
-  const handleTouchMove = (e) => {
-    if (xpos === 0) return;
-
-    const xDiff = e.touches[0].clientX - xpos;
-    setTransitionAmount(e.target.offsetParent.offsetLeft - xDiff + "px");
-    if (xDiff > 0) setSwipe(1);
-    else setSwipe(2);
-  };
-
-  const handleTouchStart = (e) => {
-    if (activeIndex === 0 || activeIndex === elms.length - 1) return;
-    setTransition("none");
-    setXpos(e.touches[0].clientX);
-    setSwipe(0);
-  };
-
-  const handleTouchEnd = (e) => {
-    setTransition(TRANS_VALUE);
-    if (swipe === 0) return;
-    swipe === 1 ? goLeft() : goRight();
-
-    setXpos(0);
-  };
-
-  const handleAfterTransition = (e) => {
     if (activeIndex === 0) {
-      setTransition(() => "transform .000001s");
-      setTransitionAmount(calcTrans(elms.length - 2));
-      setActiveIndex(elms.length - 2);
-    } else if (activeIndex === elms.length - 1) {
-      setTransition(() => "transform .000001s");
-      setTransitionAmount(calcTrans(1));
+      handleTransitionEnd();
+      setDelayedMotion("left");
+      return;
+    }
+    setTransValue("transform .4s");
+    setTransAmount(calcTrans(activeIndex - 1));
+    setActiveIndex((i) => i - 1);
+  };
+
+  const goRight = () => {
+    if (activeIndex === elmsCount - 1) {
+      handleTransitionEnd();
+      setDelayedMotion("right");
+      return;
+    }
+    setTransValue("transform .4s");
+    setTransAmount(calcTrans(activeIndex + 1));
+    setActiveIndex((i) => i + 1);
+  };
+
+  const handleTransitionEnd = (e) => {
+    if (activeIndex === elmsCount - 1) {
+      setTransValue("none");
+      setTransAmount(calcTrans(1));
       setActiveIndex(1);
-    } else {
-      setTransition(() => TRANS_VALUE);
+    } else if (activeIndex === 0) {
+      setTransValue("none");
+      setTransAmount(calcTrans(elmsCount - 2));
+      setActiveIndex(elmsCount - 2);
     }
   };
 
+  const [x, setX] = useState(5);
+  const [xdiff, setXdiff] = useState(0);
+
+  const handleTouchStart = (e) => {
+    setX(e.touches[0].clientX);
+    setTransValue("none");
+    setXdiff(0);
+  };
+
+  const handleTouchMove = (e) => {
+    if (x === 0) return;
+    const diff = e.touches[0].clientX - x;
+    setTransAmount(e.currentTarget.offsetLeft - diff + "px");
+    setXdiff(diff);
+  };
+
+  const handleTouchEnd = (e) => {
+    setTransValue("transform .4s");
+
+    if (xdiff < -(e.currentTarget.clientWidth * 0.2) && xdiff < 0) {
+      goRight();
+    } else if (xdiff > e.currentTarget.clientWidth * 0.2 && xdiff > 0) {
+      goLeft();
+    } else {
+      setTransAmount(calcTrans(activeIndex));
+    }
+  };
   return [
-    elms,
-    transition,
+    transAmount,
+    transValue,
     goLeft,
     goRight,
-    transitionAmount,
-    handleTouchStart,
-    handleTouchMove,
-    handleTouchEnd,
-    handleAfterTransition,
+    handleTransitionEnd,
+    renderElms,
   ];
-}
+};
