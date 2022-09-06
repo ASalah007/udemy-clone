@@ -98,6 +98,11 @@ const useAllStates = (props) => {
     setDelayedMotion("none");
   }, [delayedMotion]);
 
+  useEffect(() => {
+    const id = setInterval(() => goRight(), 3000);
+    return () => clearInterval(id);
+  }, []);
+
   const goLeft = () => {
     if (activeIndex === 0) {
       handleTransitionEnd();
