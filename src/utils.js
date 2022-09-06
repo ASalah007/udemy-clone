@@ -14,5 +14,9 @@ const utils = {
     }
     return res.reverse().join("");
   },
+
+  formatPrice(num) {
+    return "E£" + parseFloat(num).toFixed(2);
+  },
 };
 export default utils;

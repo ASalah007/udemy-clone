@@ -7,6 +7,9 @@ module.exports = {
         primary: "#5624d0",
         udemyBlack: "#1c1d1f",
       },
+      screens: {
+        xs: "425px",
+      },
     },
   },
   plugins: [require("@tailwindcss/line-clamp")],
