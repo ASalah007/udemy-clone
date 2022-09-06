@@ -32,7 +32,7 @@ export default function Carousel(props) {
         return (
           <button
             key={i}
-            className={`hidden md:flex absolute ${b[1]} top-1/2 z-10 bg-black text-white justify-center items-center w-11 h-11 rounded-full`}
+            className={`hidden lg:flex absolute ${b[1]} top-1/2 z-10 bg-black text-white justify-center items-center w-11 h-11 rounded-full`}
             onClick={() => b[2]()}
           >
             <span className="material-symbols-outlined text-3xl">{b[0]}</span>
@@ -99,9 +99,11 @@ const useAllStates = (props) => {
   }, [delayedMotion]);
 
   useEffect(() => {
-    const id = setInterval(() => goRight(), 3000);
+    let id;
+    if (activeIndex === 1) id = setInterval(() => goRight(), 3000);
+    if (activeIndex === elmsCount - 2) clearInterval(id);
     return () => clearInterval(id);
-  }, []);
+  }, [activeIndex]);
 
   const goLeft = () => {
     if (activeIndex === 0) {
