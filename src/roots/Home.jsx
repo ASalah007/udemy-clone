@@ -1,12 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Carousel from "../components/Carousel.jsx";
-
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Card from "../components/Card.jsx";
+import data from "../HomePageCourses.json";
+console.log(data);
 function Home() {
   return (
     <div>
       <Carousel>
-        {data.map((e, i) => {
+        {bannerData.map((e, i) => {
           return (
             <div key={i} className="relative">
               <Link to="/course" className="inline-block">
@@ -34,13 +40,52 @@ function Home() {
           );
         })}
       </Carousel>
+
+      <div className="my-2  px-3">
+        <div className="border-y border-gray-300 mb-9">
+          {data.categories.map((category, i) => {
+            return (
+              <Accordion
+                key={category.id}
+                disableGutters={true}
+                square={true}
+                sx={{ border: "0px", boxShadow: "none" }}
+                defaultExpanded={i === 0 ? true : false}
+                className="md:hidden"
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="courses"
+                >
+                  <h1 className="text-md font-bold my-2">{category.title}</h1>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <div className="flex xs:shrink-0 scroll-smooth overflow-scroll snap-x snap-mandatory">
+                    {category.items.map((course, i) => {
+                      return (
+                        <div
+                          key={i}
+                          className="grow mx-2 xs:shrink-0 snap-start snap-always"
+                        >
+                          <Card {...course} />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </AccordionDetails>
+              </Accordion>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
 
 export default Home;
 
-const data = [
+const bannerData = [
   {
     header: "Unlock the power of your people",
     body: (

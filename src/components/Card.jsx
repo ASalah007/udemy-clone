@@ -21,7 +21,9 @@ function Card(props) {
         <Rating ratingCount={props.rating} studentsCount={props.num_reviews} />
 
         <div className="font-bold my-1">
-          {utils.formatPrice(props.price || 687.99)}
+          {utils.formatPrice(
+            props.price || Math.floor(Math.random() * 1000 + 300) + 0.99
+          )}
         </div>
       </div>
     </Link>
