@@ -24,7 +24,7 @@ export default function Swiper(props) {
     coursesContainer.current.classList.remove("scroll-smooth");
     coursesContainer.current.scrollLeft = 0;
     setTotalScroll(0);
-  }, [props.dd]);
+  }, [props.id]);
 
   const scrollRight = () => {
     setTotalScroll((old) => old + calcScrollAmount());

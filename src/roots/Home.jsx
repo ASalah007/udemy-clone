@@ -1,14 +1,17 @@
 import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import Carousel from "../components/Carousel.jsx";
+import Carousel from "../components/generic_components/Carousel.jsx";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Card from "../components/Card.jsx";
+import Swiper from "../components/generic_components/Swiper.jsx";
+
 import data from "../HomePageCourses.json";
-console.log(data);
 function Home() {
+  const [courseSectionData, changeCategory, activeCategory] = useAllStates();
   return (
     <div>
       <Carousel>
@@ -41,8 +44,8 @@ function Home() {
         })}
       </Carousel>
 
-      <div className="my-2  px-3">
-        <div className="border-y border-gray-300 mb-9">
+      <div className="my-2  px-3 ">
+        <div className="border-y border-gray-300 mb-9 md:hidden">
           {data.categories.map((category, i) => {
             return (
               <Accordion
@@ -51,7 +54,6 @@ function Home() {
                 square={true}
                 sx={{ border: "0px", boxShadow: "none" }}
                 defaultExpanded={i === 0 ? true : false}
-                className="md:hidden"
               >
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
@@ -61,12 +63,12 @@ function Home() {
                   <h1 className="text-md font-bold my-2">{category.title}</h1>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <div className="flex xs:shrink-0 scroll-smooth overflow-scroll snap-x snap-mandatory">
+                  <div className="flex xs:shrink-0 scroll-smooth overflow-scroll snap-x ">
                     {category.items.map((course, i) => {
                       return (
                         <div
                           key={i}
-                          className="grow mx-2 xs:shrink-0 snap-start snap-always"
+                          className="grow mx-2 xs:shrink-0 snap-start "
                         >
                           <Card {...course} />
                         </div>
@@ -78,10 +80,71 @@ function Home() {
             );
           })}
         </div>
+
+        <div className="hidden md:block px-5">
+          <h1 className="font-bold text-3xl my-3 font-serif">
+            A broad Selection of Courses
+          </h1>
+          <p className="text-lg mb-3">
+            Choose from 204,000 online video courses with new additions
+            published every month
+          </p>
+          <div className="relative">
+            <div className="flex scroll-smooth overflow-scroll snap-x scrollbar-hide max-w-fit">
+              {data.categories.map((e, i) => {
+                return (
+                  <button
+                    key={i}
+                    className="grow pr-5 whitespace-nowrap snap-start font-bold text-gray-500"
+                    onClick={() => changeCategory(i)}
+                    style={{
+                      color: activeCategory === i ? "black" : "",
+                    }}
+                  >
+                    {e.title}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="p-7 mt-3 border border-gray-300">
+              <h1 className="text-2xl font-bold">{courseSectionData.header}</h1>
+              <p className="text-md line-clamp-3 my-3">
+                {courseSectionData.description}
+              </p>
+              <button className="border border-black py-3 px-4 text-sm  font-bold hover:bg-gray-100 my-3">
+                Explore {courseSectionData.title}
+              </button>
+
+              <Swiper id={courseSectionData.id}>
+                {courseSectionData.items.map((course, i) => {
+                  return (
+                    <div key={i} className="grow mx-2 xs:shrink-0 snap-start ">
+                      <Card {...course} />
+                    </div>
+                  );
+                })}
+              </Swiper>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
+
+const useAllStates = (props) => {
+  const [courseSectionData, setCourseSectionData] = useState(
+    data.categories[0]
+  );
+
+  const changeCategory = (index) => {
+    setCourseSectionData(data.categories[index]);
+    setActiveCategory(index);
+  };
+
+  const [activeCategory, setActiveCategory] = useState(0);
+  return [courseSectionData, changeCategory, activeCategory];
+};
 
 export default Home;
 

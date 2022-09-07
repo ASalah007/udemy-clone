@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Navigation() {
   return (
-    <nav className="flex justify-around p-3 md:p-4 items-center shadow-md z-10 w-screen overflow-hidden">
+    <nav className="flex justify-around p-3 md:p-4 md:px-6 items-center shadow-md z-10 w-screen overflow-hidden">
       <button>
         <span className="material-symbols-outlined translate-y-1 md:hidden">
           menu
@@ -40,10 +40,10 @@ function Navigation() {
         />
       </form>
 
-      <button className="text-sm hover:text-primary mx-3 hidden lg:inline-block">
+      <button className="text-sm hover:text-primary mx-3 hidden xl:inline-block whitespace-nowrap">
         Udemy Business
       </button>
-      <button className="text-sm hover:text-primary mx-3 hidden lg:inline-block">
+      <button className="text-sm hover:text-primary mx-3 hidden lg:inline-block whitespace-nowrap">
         Teach on Udemy
       </button>
 
