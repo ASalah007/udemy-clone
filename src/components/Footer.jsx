@@ -15,7 +15,7 @@ const links = [
 function Footer() {
   return (
     <footer className="bg-udemyBlack text-gray-200 min-w-full px-10 ">
-      <div className="py-6 grid grid-cols-1 md:grid-cols-4">
+      <div className="py-6 grid grid-cols-1 lg:grid-cols-4">
         {links.map((e, i) => (
           <div key={i}>
             {e.map((l, j) => (
@@ -30,14 +30,14 @@ function Footer() {
           </div>
         ))}
 
-        <div className="row-start-1 md:row-auto mb-6">
-          <button className="md:float-right grid grid-cols-4 p-3 border border-gray-300 text-white hover:bg-[#444]">
+        <div className="row-start-1 lg:row-auto mb-6">
+          <button className="lg:float-right grid grid-cols-4 p-3 border border-gray-300 text-white hover:bg-[#444]">
             <span className="material-symbols-outlined">language</span>
             <span className="col-span-2">Language</span>
           </button>
         </div>
       </div>
-      <div className="md:py-10 pb-10 flex md:items-center flex-col md:flex-row justify-between">
+      <div className="lg:py-10 pb-20 flex lg:items-center flex-col lg:flex-row justify-between">
         <Link to="/">
           <img
             src="/assets/logo-udemy-inverted.svg"

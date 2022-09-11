@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Navigation() {
   return (
-    <nav className="flex justify-around p-3 md:p-4 md:px-6 items-center shadow-md z-10 w-screen overflow-hidden">
+    <nav className="flex justify-around p-3 md:p-4 md:px-6 items-center shadow-md relative z-20 w-screen overflow-hidden bg-white">
       <button>
         <span className="material-symbols-outlined translate-y-1 md:hidden">
           menu

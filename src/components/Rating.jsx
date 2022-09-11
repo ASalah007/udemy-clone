@@ -1,16 +1,22 @@
 import utils from "../utils.js";
 
 const Rating = (props) => {
-  const ratingCount = props.ratingCount;
-  const studentsCount = props.studentsCount;
-
+  const {
+    ratingCount,
+    studentsCount,
+    starsLimit,
+    studentsCountClassName,
+    onStudentsClick,
+    studentsCountPostfix,
+    className,
+  } = props;
   return (
-    <div className="flex items-center">
+    <div className={"flex items-center "}>
       <span className="font-bold mr-[4px] text-md text-yellow-600 ">
         {ratingCount.toFixed(1)}
       </span>
 
-      {utils.range(Math.floor(ratingCount)).map((i) => (
+      {utils.range(starsLimit || Math.floor(ratingCount)).map((i) => (
         <img
           key={i}
           className="w-[15px] h-[15px] mx-[1px] -translate-y-[2px]"
@@ -19,7 +25,7 @@ const Rating = (props) => {
         />
       ))}
 
-      {ratingCount - Math.floor(ratingCount) > 0 && (
+      {ratingCount - Math.floor(ratingCount) > 0 && !starsLimit && (
         <img
           className="w-[15px] h-[15px] mx-[1px] -translate-y-[2px]"
           src="/assets/half-star.png"
@@ -27,8 +33,17 @@ const Rating = (props) => {
         />
       )}
 
-      <span className="text-xs ml-1 text-gray-500 tranlsate-y-[1px]">
-        {"(" + utils.formatCount(studentsCount) + ")"}
+      <span
+        className={
+          "text-xs ml-1 text-gray-500 tranlsate-y-[1px] " +
+          studentsCountClassName
+        }
+        onClick={(e) => onStudentsClick(e)}
+      >
+        {"(" +
+          utils.formatCount(studentsCount) +
+          (studentsCountPostfix || "") +
+          ")"}
       </span>
     </div>
   );
