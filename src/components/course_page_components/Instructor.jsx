@@ -21,10 +21,10 @@ export default function Instructor(props) {
         />
         <div className="flex flex-col gap-2">
           {[
-            ["star", props.rating, "Instructor Rating"],
-            ["workspace_premium", utils.formatCount(props.reviews), "reviews"],
-            ["group", utils.formatCount(props.students), "Students"],
-            ["play_circle", props.courses, "Courses"],
+            ["star", props.Instructor_Rating, "Instructor Rating"],
+            ["workspace_premium", utils.formatCount(props.Reviews), "reviews"],
+            ["group", utils.formatCount(props.Students), "Students"],
+            ["play_circle", props.Courses, "Courses"],
           ].map((info, i) => {
             return (
               <div key={i} className="flex gap-3 items-center">
@@ -52,36 +52,7 @@ export default function Instructor(props) {
             !expandDisc && "linear-gradient(black, black, transparent)",
         }}
       >
-        <p>
-          <strong>
-            <em>&nbsp; &nbsp;</em>
-          </strong>
-          Avinash Jain is currently a senior at UC Berkeley majoring in
-          Electrical Engineering and Computer Science. He's the CEO and Founder
-          of TheCodex, an online educational&nbsp;platform focused on bringing
-          the best programming content to hundreds of&nbsp;thousands of students
-          around the world.
-        </p>
-        <p>
-          His programming journey began at the age of 10, starting off with
-          simple Python scripts to crawl the weather.&nbsp;Since then, he's
-          worked at numerous companies and is professionally experienced in
-          Python, iOS Development and Web Development. He's launched a plethora
-          of applications in the App Store amassing thousands of downloads.
-          Additionaly, he's competed and won in&nbsp;several hackathons around
-          the world including PennApps and NWHacks.
-        </p>
-        <p>
-          Avinash has a passion to teach - his enthusiasm and love for
-          programming is evident in every video. For the past 7 years he's been
-          an instructor on Udemy and he loves motivating and enabling others to
-          pursue their programming dreams. He hopes to help students realize the
-          power of programming and jumpstart their careers through his courses.
-        </p>
-        <p>
-          Checkout TheCodex for all of his courses, fantastic&nbsp;discounts,
-          and&nbsp;any guidance or help.&nbsp;
-        </p>
+        {props.description}
       </div>
       <button
         onClick={() => {

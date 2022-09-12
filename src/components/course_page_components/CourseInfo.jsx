@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 
-export default function CourseInfo() {
+export default function CourseInfo(props) {
   const info = React.createRef();
   const [pos, setPos] = useState("top");
 
@@ -45,13 +45,15 @@ export default function CourseInfo() {
         } border-white`}
       >
         <img
-          src=" https://img-c.udemycdn.com/course/240x135/394676_ce3d_5.jpg"
+          src={props.image_240x135}
           alt="#"
-          className="w-full"
+          className="w-full border border-gray-300"
         />
       </div>
       <div className="flex flex-col p-6 gap-3">
-        <div className="text-3xl font-bold">E£269.99</div>
+        <div className="text-3xl font-bold">
+          {props.price.list_price.price_string}
+        </div>
         <div className="text-red-500 text-sm flex items-center gap-1">
           <span className="material-symbols-outlined">alarm</span>
           <span className="font-bold">10 hours</span> left at that price
@@ -68,7 +70,7 @@ export default function CourseInfo() {
         <h1 className=" font-bold">This course includes:</h1>
         <div className="flex flex-col gap-1">
           {[
-            ["live_tv", "14 hours on-demand video"],
+            ["live_tv", `14 hours on-demand video`],
             ["description", "1 article"],
             ["system_update_alt", "3 downloadable resources"],
             ["all_inclusive", "Full lifetime access"],

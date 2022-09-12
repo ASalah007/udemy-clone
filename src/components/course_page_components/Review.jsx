@@ -6,15 +6,12 @@ export default function Review(props) {
   return (
     <div className="flex gap-8 py-5 border-b border-b-gray-300">
       <div className="bg-black rounded-full hidden sm:flex w-16 h-16  justify-center items-center text-white font-bold text-2xl shrink-0">
-        {props.title.split(" ")[0][0] +
-          (props.title.split(" ").length > 1
-            ? props.title.split(" ")[1][0]
-            : " ")}
+        {props.user.initials}
       </div>
       <div className="grow flex flex-col gap-2">
-        <h1 className="font-extrabold text-xl">{props.title}</h1>
+        <h1 className="font-extrabold text-xl">{props.user.display_name}</h1>
         <Rating defaultValue={props.rating} readOnly={true} precision={0.5} />
-        <p>{props.body}</p>
+        <p>{props.content}</p>
         <p className="font-light mb-1">
           {like !== undefined
             ? "Thank you for the feedback"

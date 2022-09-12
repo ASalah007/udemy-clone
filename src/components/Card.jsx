@@ -1,7 +1,6 @@
 import React from "react";
 import Rating from "./Rating.jsx";
 import { Link } from "react-router-dom";
-import utils from "../utils.js";
 
 function Card(props) {
   return (
@@ -21,9 +20,7 @@ function Card(props) {
         <Rating ratingCount={props.rating} studentsCount={props.num_reviews} />
 
         <div className="font-bold my-1">
-          {utils.formatPrice(
-            props.price || Math.floor(Math.random() * 1000 + 300) + 0.99
-          )}
+          {props.price.list_price.price_string}
         </div>
       </div>
     </Link>

@@ -1,17 +1,21 @@
 import { Rating } from "@mui/material";
 import React from "react";
 
-export default function CourseFeedback() {
+export default function CourseFeedback(props) {
   return (
     <div className="mb-5">
       <h1 className="text-2xl font-bold mb-3">Student feedback</h1>
       <div className="flex sm:gap-8 flex-col sm:flex-row ">
         <div className="flex md:flex-col items-end md:items-center md:pb-6">
           <span className="text-[80px] tracking-widest font-bold text-yellow-700 translate-y-2">
-            4.4
+            {props.rating.toFixed(1)}
           </span>
           <div className="hidden md:block">
-            <Rating defaultValue={4.4} precision={0.5} readOnly={true} />
+            <Rating
+              defaultValue={props.rating}
+              precision={0.5}
+              readOnly={true}
+            />
           </div>
           <span className="text-yellow-700 font-bold text-lg whitespace-nowrap pb-2">
             Course Rating

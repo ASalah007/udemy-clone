@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Carousel from "../components/generic_components/Carousel.jsx";
@@ -8,10 +8,13 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Card from "../components/Card.jsx";
 import Swiper from "../components/generic_components/Swiper.jsx";
+import { CircularProgress } from "@mui/material";
 
-import data from "../HomePageCourses.json";
+let data;
+
 function Home() {
-  const [courseSectionData, changeCategory, activeCategory] = useAllStates();
+  const [courseSectionData, changeCategory, activeCategory, dataLoaded] =
+    useAllStates();
   return (
     <div>
       <Carousel>
@@ -46,39 +49,47 @@ function Home() {
 
       <div className="my-2  px-3 ">
         <div className="border-y border-gray-300 mb-9 md:hidden">
-          {data.categories.map((category, i) => {
-            return (
-              <Accordion
-                key={category.id}
-                disableGutters={true}
-                square={true}
-                sx={{ border: "0px", boxShadow: "none" }}
-                defaultExpanded={i === 0 ? true : false}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="courses"
+          {!dataLoaded ? (
+            <CircularProgress />
+          ) : (
+            data.map((category, i) => {
+              return (
+                <Accordion
+                  key={category.id}
+                  disableGutters={true}
+                  square={true}
+                  sx={{ border: "0px", boxShadow: "none" }}
+                  defaultExpanded={i === 0 ? true : false}
                 >
-                  <h1 className="text-md font-bold my-2">{category.title}</h1>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <div className="flex xs:shrink-0 scroll-smooth overflow-scroll snap-x ">
-                    {category.items.map((course, i) => {
-                      return (
-                        <div
-                          key={i}
-                          className="grow mx-2 xs:shrink-0 snap-start "
-                        >
-                          <Card {...course} />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </AccordionDetails>
-              </Accordion>
-            );
-          })}
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="courses"
+                  >
+                    <h1 className="text-md font-bold my-2">{category.title}</h1>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <div className="flex xs:shrink-0 scroll-smooth overflow-scroll snap-x ">
+                      {!dataLoaded ? (
+                        <CircularProgress />
+                      ) : (
+                        category.items.map((course, i) => {
+                          return (
+                            <div
+                              key={i}
+                              className="grow mx-2 xs:shrink-0 snap-start "
+                            >
+                              <Card {...course} />
+                            </div>
+                          );
+                        })
+                      )}
+                    </div>
+                  </AccordionDetails>
+                </Accordion>
+              );
+            })
+          )}
         </div>
 
         <div className="hidden md:block px-5">
@@ -91,20 +102,24 @@ function Home() {
           </p>
           <div className="relative">
             <div className="flex scroll-smooth overflow-scroll snap-x scrollbar-hide max-w-fit">
-              {data.categories.map((e, i) => {
-                return (
-                  <button
-                    key={i}
-                    className="grow pr-5 whitespace-nowrap snap-start font-bold text-gray-500"
-                    onClick={() => changeCategory(i)}
-                    style={{
-                      color: activeCategory === i ? "black" : "",
-                    }}
-                  >
-                    {e.title}
-                  </button>
-                );
-              })}
+              {!dataLoaded ? (
+                <CircularProgress />
+              ) : (
+                data.map((e, i) => {
+                  return (
+                    <button
+                      key={i}
+                      className="grow pr-5 whitespace-nowrap snap-start font-bold text-gray-500"
+                      onClick={() => changeCategory(i)}
+                      style={{
+                        color: activeCategory === i ? "black" : "",
+                      }}
+                    >
+                      {e.title}
+                    </button>
+                  );
+                })
+              )}
             </div>
             <div className="p-7 mt-3 border border-gray-300">
               <h1 className="text-2xl font-bold">{courseSectionData.header}</h1>
@@ -116,13 +131,25 @@ function Home() {
               </button>
 
               <Swiper id={courseSectionData.id}>
-                {courseSectionData.items.map((course, i) => {
-                  return (
-                    <div key={i} className="grow mx-2 xs:shrink-0 snap-start ">
-                      <Card {...course} />
-                    </div>
-                  );
-                })}
+                {!dataLoaded ? (
+                  <div className="flex justify-around w-full">
+                    <CircularProgress />
+                    <CircularProgress />
+                    <CircularProgress />
+                    <CircularProgress />
+                  </div>
+                ) : (
+                  courseSectionData.items.map((course, i) => {
+                    return (
+                      <div
+                        key={i}
+                        className="grow mx-2 xs:shrink-0 snap-start "
+                      >
+                        <Card {...course} />
+                      </div>
+                    );
+                  })
+                )}
               </Swiper>
             </div>
           </div>
@@ -133,17 +160,34 @@ function Home() {
 }
 
 const useAllStates = (props) => {
-  const [courseSectionData, setCourseSectionData] = useState(
-    data.categories[0]
-  );
+  const [courseSectionData, setCourseSectionData] = useState({
+    header: "",
+    title: "",
+    description: "",
+    id: "",
+    items: [""],
+  });
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   const changeCategory = (index) => {
-    setCourseSectionData(data.categories[index]);
+    setCourseSectionData(data[index]);
     setActiveCategory(index);
   };
 
+  useEffect(() => {
+    fetch("http://localhost:3000/summary")
+      .then((response) => {
+        return response.json();
+      })
+      .then((e) => {
+        data = e;
+        setDataLoaded(true);
+
+        setCourseSectionData(data[0]);
+      });
+  }, []);
   const [activeCategory, setActiveCategory] = useState(0);
-  return [courseSectionData, changeCategory, activeCategory];
+  return [courseSectionData, changeCategory, activeCategory, dataLoaded];
 };
 
 export default Home;

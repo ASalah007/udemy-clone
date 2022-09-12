@@ -13,7 +13,9 @@ export default function Breadcrumbs(props) {
               <li key={i + 1000}>
                 <span
                   className={`material-symbols-outlined translate-y-1 mx-1 ${
-                    i === 2 ? "hidden " : " "
+                    i >= React.Children.count(props.children) - 1
+                      ? "hidden "
+                      : " "
                   } ${props.arrowClassName}`}
                 >
                   navigate_next

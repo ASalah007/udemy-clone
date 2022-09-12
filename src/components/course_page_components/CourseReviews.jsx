@@ -28,12 +28,7 @@ export default function CourseReviews(props) {
           <span>1 stars </span>
         </Dropdown>
       </form>
-      {props.reviews.map((e, i) => [
-        <Review
-          key={i}
-          {...e}
-        />,
-      ])}
+      {props.reviews.results.map((e, i) => [<Review key={i} {...e} />])}
     </div>
   );
 }
