@@ -24,7 +24,7 @@ function Navigation() {
       </button>
 
       <form
-        action="#"
+        action="/"
         id="search"
         className="grow shrink min-w-[150px] bg-[#f7f9fa] border border-black py-2 rounded-full hidden md:flex items-center mx-2"
       >

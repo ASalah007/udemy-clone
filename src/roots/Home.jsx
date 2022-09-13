@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Carousel from "../components/generic_components/Carousel.jsx";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -13,8 +13,13 @@ import { CircularProgress } from "@mui/material";
 let data;
 
 function Home() {
-  const [courseSectionData, changeCategory, activeCategory, dataLoaded] =
-    useAllStates();
+  const [
+    courseSectionData,
+    changeCategory,
+    activeCategory,
+    dataLoaded,
+    keyword,
+  ] = useAllStates();
   return (
     <div>
       <Carousel>
@@ -139,16 +144,27 @@ function Home() {
                     <CircularProgress />
                   </div>
                 ) : (
-                  courseSectionData.items.map((course, i) => {
-                    return (
-                      <div
-                        key={i}
-                        className="grow mx-2 xs:shrink-0 snap-start "
-                      >
-                        <Card {...course} />
-                      </div>
-                    );
-                  })
+                  courseSectionData.items
+                    .filter((course) => {
+                      if (!keyword) return true;
+                      return (
+                        course.title.includes(keyword) ||
+                        course.published_title.includes(keyword) ||
+                        course.visible_instructors.some((inst) =>
+                          inst.title.includes(keyword)
+                        )
+                      );
+                    })
+                    .map((course, i) => {
+                      return (
+                        <div
+                          key={i}
+                          className="grow mx-2 xs:shrink-0 snap-start "
+                        >
+                          <Card {...course} />
+                        </div>
+                      );
+                    })
                 )}
               </Swiper>
             </div>
@@ -187,7 +203,17 @@ const useAllStates = (props) => {
       });
   }, []);
   const [activeCategory, setActiveCategory] = useState(0);
-  return [courseSectionData, changeCategory, activeCategory, dataLoaded];
+
+  const [searchParams] = useSearchParams();
+  const keyword = searchParams.get("searchbar")?.toLowerCase();
+
+  return [
+    courseSectionData,
+    changeCategory,
+    activeCategory,
+    dataLoaded,
+    keyword,
+  ];
 };
 
 export default Home;
